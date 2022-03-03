@@ -1,0 +1,157 @@
+<html>
+  <head>
+    <title>Express</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <style>
+      table.customTable {
+        width: 100%;
+        background-color: #ffffff;
+        border-collapse: collapse;
+        border-width: 2px;
+        border-color: #7ea8f8;
+        border-style: solid;
+        color: #000000;
+      }
+
+      table.customTable td,
+      table.customTable th {
+        border-width: 2px;
+        border-color: #7ea8f8;
+        border-style: solid;
+        padding: 5px;
+      }
+
+      table.customTable thead {
+        background-color: #7ea8f8;
+      }
+
+      input[type="text"],
+      select {
+        width: 50%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      input[type="submit"] {
+        width: 33%;
+        background-color: #4caf50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #45a049;
+      }
+      .col-25 {
+        float: left;
+        width: 25%;
+        margin-top: 19px;
+      }
+
+      .col-75 {
+        float: left;
+        width: 75%;
+        margin-top: 6px;
+      }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <script>
+      var url = "http://localhost:3000/main";
+
+      $(document).ready(function () {
+        $("#showButton").click(function () {
+          $.ajax({
+            url: "/main",
+            dataType: "json",
+            error: function () {
+              console.log("JSON FAILED for data");
+            },
+            success: function (results) {
+              /* the results is your json, you can reference the elements directly by using it here, without creating any additional variables */
+
+              var tableList = document.getElementById("table");
+
+              results.forEach(function (element) {
+                tableList.insertAdjacentHTML(
+                  "beforeend",
+                  "<tbody>" +
+                    "<tr>" +
+                    "<td>" +
+                    element.id +
+                    "</td>" +
+                    "<td>" +
+                    element.text +
+                    "</td>" +
+                    "<td>" +
+                    element.user?.name +
+                    "</td>" +
+                    "<td>" +
+                    element.created_at +
+                    "</td>" +
+                    "</tr>" +
+                    "</tbody>"
+                );
+              }); // end of forEach
+            }, // end of success fn
+          }); // end of Ajax call
+        });
+      }); // end of $(document).ready() function
+
+      $(document).ready(function(){
+   var $form = $('form');
+   $form.submit(function(){
+      $.post($(this).attr('action'), $(this).serialize(), function(response){
+            // do something here on success
+      },'json');
+      return false;
+   });
+});
+    </script>
+  </head>
+
+  <body>
+    <h1 style="text-align: center;">Welcome to Priya's Assignment!</h1>
+    <div style="text-align: center; margin-top: 2%;">
+      <input id="showButton" type="submit" value="Show" />
+    </div>
+    <!-- <button id="showButton">Show</button> -->
+    <div id="tableData" style="padding-top: 5%">
+      <table class="customTable" id="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Tweet</th>
+            <th>User</th>
+            <th>Created_At</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div style="padding: 10%; text-align: center">
+      <form action="addTofile" method="post">
+        <!-- <div> -->
+        <label style="margin-right: 25px;">User ID : </label>
+        <!-- </div> -->
+        <!-- <div class="col-75"> -->
+          <input type="text" name="userid" required /></br>
+        <!-- </div> -->
+        <!-- <div class="col-25"> -->
+          <label>Tweet Text :  </label>
+        <!-- </div> -->
+        <!-- <div class="col-75"> -->
+          <input type="text" name="username" required /></br>
+        <!-- </div> -->
+        <input type="submit" value="Create" />
+      </form>
+    </div>
+  </body>
+</html>
